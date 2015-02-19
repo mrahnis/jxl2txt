@@ -1,0 +1,12 @@
+include MANIFEST.in
+include LICENSE.txt
+include README.rst
+include setup.py
+
+graft examples
+graft jxl2txt
+
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude .git*
+global-exclude *.png
