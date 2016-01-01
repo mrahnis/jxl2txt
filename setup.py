@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 
+
 # Parse the version from the shapely module
 for line in open('jxl2txt/__init__.py', 'r'):
     if line.find("__version__") >= 0:
@@ -12,22 +13,23 @@ for line in open('jxl2txt/__init__.py', 'r'):
 with open('VERSION.txt', 'w') as fp:
     fp.write(version)
 
+
 setup(name='jxl2txt',
 	version=version,
 	author='Michael Rahnis',
 	author_email='michael.rahnis@fandm.edu',
-	description='Python script to convert Trimble JobXML files using XSLT',
+	description='Python library to convert Trimble JobXML files using XSLT',
 	url='http://github.com/mrahnis/jxl2txt',
 	license='BSD',
 	packages=find_packages(),
+	include_package_data=True,
 	install_requires=[
-		'lxml'
+		'lxml', 'Click'
 	],
-	entry_points={
-		'console_scripts' : [
-			'jxl2txt = jxl2txt.jxl2txt:main'
-		]
-	},
+	entry_points='''
+		[console_scripts]
+		jxl2txt=jxl2txt.jxl2txt:cli
+	''',
 	keywords='survey, conversion',
 	classifiers=[
 		'Development Status :: 3 - Alpha',
