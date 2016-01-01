@@ -123,9 +123,11 @@ def cli(xml_path, xsl_path, output, prompt, verbose):
 	fields = get_fields(xslRoot)
 
 	# are there extra args?
+	# need to forward args for the XSLT from Click as described here:
+	# http://click.pocoo.org/4/advanced/#forwarding-unknown-options
 	for field in fields:
 		props = fields[field]
-		click.OptionParser.add_option('--{0}'.format(field), help=props[0])
+		click.OptionParser.add_option('--{0}'.format(field), props[0])  # help=props[0]
 
 	if prompt is True:
 		options = get_input(xslRoot)
