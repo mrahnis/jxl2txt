@@ -13,7 +13,6 @@ for line in open('jxl2txt/__init__.py', 'r'):
 with open('VERSION.txt', 'w') as fp:
     fp.write(version)
 
-
 setup(name='jxl2txt',
 	version=version,
 	author='Michael Rahnis',

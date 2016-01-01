@@ -101,7 +101,6 @@ def transform(xmlRoot, xslRoot, options=None):
 @click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
 #@click.option('--loglevel', type=click.Choice([0,2]), help="Verbose (debug) logging")
 #@click.option('--quiet', 'loglevel', flag_value=0, default=True, help="Silent mode, only log warnings")
-
 def cli(xml_path, xsl_path, output, prompt, verbose):
 	""" Apply an XSL stylesheet to a Trimble JXL file.
 
