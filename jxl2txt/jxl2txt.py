@@ -20,6 +20,8 @@ import json
 from collections import OrderedDict
 from lxml import etree
 
+from jxl2txt.tools.console import *
+
 def read_xml(filename, parser):
 	xml = open(filename).read().encode('utf-8')
 	xmlRoot = etree.fromstring(xml, parser=parser)
@@ -90,18 +92,14 @@ def transform(xmlRoot, xslRoot, options=None):
 
 	return transRoot
 
-@click.command()
+@click.command(context_settings=dict(ignore_unknown_options=True,))
 @click.argument('xml_path', nargs=1, type=click.Path(exists=True), metavar='XML FILE')
 @click.argument('xsl_path', nargs=1, type=click.Path(exists=True), metavar='XSL FILE')
 @click.option('--output', type=click.File('wb', 0), metavar='OUTPUT FILE', help="output file name")
-
-@click.option('--prompt', 'prompt', is_flag=True, default=True, help="show user prompts for stylesheet options")
-@click.option('--no-prompt', 'prompt', is_flag=True, help="do not show user prompts for stylesheet options")
-
+@click.option('--prompt/--no-prompt', default=True, help="show user prompts for stylesheet options")
 @click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
-#@click.option('--loglevel', type=click.Choice([0,2]), help="Verbose (debug) logging")
-#@click.option('--quiet', 'loglevel', flag_value=0, default=True, help="Silent mode, only log warnings")
-def cli(xml_path, xsl_path, output, prompt, verbose):
+@click.argument('xslt_args', nargs=-1, type=click.UNPROCESSED)
+def cli(xml_path, xsl_path, output, prompt, verbose, xslt_args):
 	""" Apply an XSL stylesheet to a Trimble JXL file.
 
 		xml_path : input JobXML path
@@ -119,24 +117,19 @@ def cli(xml_path, xsl_path, output, prompt, verbose):
 
 	xmlRoot = read_xml(xml_path, parser)
 	xslRoot = read_xml(xsl_path, parser)
-
 	fields = get_fields(xslRoot)
-
-	# are there extra args?
-	# need to forward args for the XSLT from Click as described here:
-	# http://click.pocoo.org/4/advanced/#forwarding-unknown-options
-	for field in fields:
-		props = fields[field]
-		click.OptionParser.add_option('--{0}'.format(field), props[0])  # help=props[0]
 
 	if prompt is True:
 		options = get_input(xslRoot)
 	else:
 		options = get_options(xslRoot, fields)
-		arguments = (vars(args))
-		for field in fields:
-			if arguments[field] is not None:
-				 options[field] = arguments[field]
+		kwds = [s.strip('-') for s in xslt_args[0::2]]
+		args = dict(zip(kwds, xslt_args[1::2]))
+		for arg in args:
+			try:
+				options[arg] = "'{0}'".format(args[arg])
+			except:
+				logging.info("Argument, {}, is not an available option.".format(arg))
 
 	result = transform(xmlRoot, xslRoot, options=options)
 
