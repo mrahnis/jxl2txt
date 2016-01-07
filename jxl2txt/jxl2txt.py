@@ -6,7 +6,7 @@ A command-line utility to transform a Trimble JobXML file using a XSLT styleshee
 Stylesheets are available from the Trimble website.
 
 Examples:
-python .\jxl2txt.py './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes='No' --no-prompt
+jxl2txt './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes No --no-prompt
 
 """
 
@@ -92,14 +92,18 @@ def transform(xmlRoot, xslRoot, options=None):
 
 	return transRoot
 
+@click.group()
+def cli():
+    pass
+
 @click.command(context_settings=dict(ignore_unknown_options=True,))
-@click.argument('xml_path', nargs=1, type=click.Path(exists=True), metavar='XML FILE')
-@click.argument('xsl_path', nargs=1, type=click.Path(exists=True), metavar='XSL FILE')
-@click.option('--output', type=click.File('wb', 0), metavar='OUTPUT FILE', help="output file name")
-@click.option('--prompt/--no-prompt', default=True, help="show user prompts for stylesheet options")
-@click.option('-v', '--verbose', is_flag=True, help='Enables verbose mode')
+@click.argument('xml_path', nargs=1, type=click.Path(exists=True), metavar='XML_FILE')
+@click.argument('xsl_path', nargs=1, type=click.Path(exists=True), metavar='XSL_FILE')
+@click.option('--output', type=click.File('wb', 0), metavar='OUTPUT_FILE', help="output file name")
+@click.option('--prompt/--no-prompt', default=True, help="show user prompts for stylesheet options, or use command line arguments")
+@click.option('-v', '--verbose', is_flag=True, help='enables verbose mode')
 @click.argument('xslt_args', nargs=-1, type=click.UNPROCESSED)
-def cli(xml_path, xsl_path, output, prompt, verbose, xslt_args):
+def convert(xml_path, xsl_path, output, prompt, verbose, xslt_args):
 	""" Apply an XSL stylesheet to a Trimble JXL file.
 
 		xml_path : input JobXML path
@@ -137,3 +141,62 @@ def cli(xml_path, xsl_path, output, prompt, verbose, xslt_args):
 		output.write(result)
 	else:
 		print(result)
+
+
+@click.command(help="Print information about an XSL stylesheet")
+@click.argument('xml_path', nargs=1, type=click.Path(exists=True), metavar='XML_FILE')
+def info(xml_path):
+	""" Print information about a JobXML file or XSL stylesheet.
+
+		xml_path : input XML file path
+	"""
+
+	parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+
+	"""
+	Trimble stylesheets
+		<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
+		get_fields()
+	JobXML files
+		<JOBFile jobName="control" version="5.3" product="Trimble Survey Controller" productVersion="12.45" productDBVersion="1245-4" TimeStamp="2010-03-31T10:10:51"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.trimble.com/schema/JobXML/5_3 http://www.trimble.com/schema/JobXML/5_3/JobXMLSchema-5.3.xsd">
+         print(some jobfile info)
+    """
+
+	root = read_xml(xml_path, parser)
+
+	if root.tag == 'JOBFile':
+		print("Document Type: JobXML")
+		print("")		
+		print("Job Properties")
+		print("==============")		
+		print("Reference: {}".format(root.find('FieldBook/JobPropertiesRecord/Reference').text))
+		print("Description: {}".format(root.find('FieldBook/JobPropertiesRecord/Description').text))
+		print("Operator: {}".format(root.find('FieldBook/JobPropertiesRecord/Operator').text))
+		print("Job Note: {}".format(root.find('FieldBook/JobPropertiesRecord/JobNote').text))
+	elif root.tag == '{http://www.w3.org/1999/XSL/Transform}stylesheet':
+		fields = get_fields(root)
+		print("Document Type: Trimble XSL Stylesheet")
+		print("")
+		print("Available Options")
+		print("=================")
+		for field in fields:
+			props = fields[field]
+			label = "{0}".format(props[0])
+			if props[1].lower()=='stringmenu':
+				n = int(props[2])
+				print("{0} : {1} {2}".format(field, label, props[-n:]))
+			elif props[1].lower()=='double':
+				print("{0} : {1} low={2}, high={3}".format(field, label, props[2], props[3]))
+			elif props[1].lower()=='integer':
+				print("{0} : {1} low={2}, high={3}".format(field, label, props[2], props[3]))
+			elif props[1].lower()=='string':
+				print("{0} : {1}".format(field, label))
+			else:
+				logging.warning('Unexpected field type: ', props[1])
+	else:
+		print("Document Type: not recognized")
+
+cli.add_command(convert)
+cli.add_command(info)
