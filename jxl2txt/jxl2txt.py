@@ -20,7 +20,7 @@ import json
 from collections import OrderedDict
 from lxml import etree
 
-from jxl2txt.tools.console import *
+from jxl2txt.tools.console import choice_prompt, double_prompt, integer_prompt, string_prompt
 
 def read_xml(filename, parser):
 	xml = open(filename).read().encode('utf-8')
