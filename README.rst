@@ -4,6 +4,17 @@ jxl2txt
 
 jxl2txt is a Python script to convert Trimble JobXML files to various kinds of text using XSLT stylesheets.
 
+.. image:: https://travis-ci.org/mrahnis/jxl2txt.svg?branch=master
+    :target: https://travis-ci.org/mrahnis/jxl2txt
+
+.. image:: https://ci.appveyor.com/api/projects/status/github/mrahnis/jxl2txt?svg=true
+	:target: https://ci.appveyor.com/api/projects/status/github/mrahnis/jxl2txt?svg=true
+
+.. image:: https://readthedocs.org/projects/jxl2txt/badge/?version=latest
+	:target: http://jxl2txt.readthedocs.io/en/latest/?badge=latest
+	:alt: Documentation Status
+
+
 Dependencies
 ============
 
