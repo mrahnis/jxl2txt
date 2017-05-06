@@ -23,7 +23,7 @@ setup(name='jxl2txt',
 	packages=find_packages(),
 	include_package_data=True,
 	install_requires=[
-		'lxml', 'Click'
+		'lxml', 'click'
 	],
 	entry_points='''
 		[console_scripts]
