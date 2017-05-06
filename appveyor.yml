@@ -23,7 +23,7 @@ install:
   - "conda create -q -n test-environment python=%PYTHON_VERSION% click lxml pytest"
   - activate test-environment
   - conda build .
-  - conda install surficial --use-local
+  - conda install jxl2txt --use-local
 
 artifacts:
   - path: 'conda-packages\*.tar.bz2'
