@@ -11,7 +11,7 @@ build:
   number: 1
   script: python setup.py install --single-version-externally-managed --record=record.txt
   entry_points:
-    - surficial = jxl2txt.jxl2txt:cli
+    - jxl2txt = jxl2txt.jxl2txt:cli
 
 requirements:
   build:
