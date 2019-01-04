@@ -62,3 +62,6 @@ target/
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
+
+# Examples
+examples/
