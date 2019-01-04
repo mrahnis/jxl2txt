@@ -14,18 +14,14 @@ jxl2txt is a Python script to convert Trimble JobXML files to various kinds of t
 	:target: http://jxl2txt.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
 
-
-Dependencies
-============
-
-jxl2txt 0.1.0 depends on:
-
-* `Python 2.7 or 3.x`_
-* lxml_
-* Click_
-
 Installation
 ============
+
+.. image:: https://img.shields.io/pypi/v/jxl2txt.svg
+	:target: https://pypi.python.org/pypi/jxl2txt/
+
+.. image:: https://anaconda.org/mrahnis/jxl2txt/badges/version.svg
+	:target: https://anaconda.org/mrahnis/jxl2txt
 
 To install from the Python Package Index:
 
