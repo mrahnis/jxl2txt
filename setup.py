@@ -1,7 +1,6 @@
 from setuptools import setup, find_packages
 
 
-# Parse the version from the shapely module
 for line in open('jxl2txt/__init__.py', 'r'):
     if line.find("__version__") >= 0:
         version = line.split("=")[1].strip()
@@ -9,7 +8,6 @@ for line in open('jxl2txt/__init__.py', 'r'):
         version = version.strip("'")
         continue
 
-#open('VERSION.txt', 'wb').write(bytes(version, 'UTF-8'))
 with open('VERSION.txt', 'w') as fp:
     fp.write(version)
 
