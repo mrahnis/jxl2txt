@@ -22,24 +22,27 @@ from lxml import etree
 
 from jxl2txt.tools.console import choice_prompt, double_prompt, integer_prompt, string_prompt
 
+
 def read_xml(filename, parser):
     xml = open(filename).read().encode('utf-8')
     xmlRoot = etree.fromstring(xml, parser=parser)
 
     return xmlRoot
 
+
 def get_fields(xslRoot):
     fields = OrderedDict()
 
-    # xpath 1.0
-    for element in xslRoot.xpath("//xsl:variable[starts-with(@name, 'userField')]", namespaces={'xsl':'http://www.w3.org/1999/XSL/Transform'}):
     # xpath 2.0
     #for field in xslRoot.xpath("/variable[matches(@name, 'userField*')]"):
+    # xpath 1.0
+    for element in xslRoot.xpath("//xsl:variable[starts-with(@name, 'userField')]", namespaces={'xsl':'http://www.w3.org/1999/XSL/Transform'}):
         select = element.attrib['select'].strip("'")
         properties = select.split('|')
         fields[properties[0]] = properties[1:]
 
     return fields
+
 
 def get_options(xslRoot, options):
     settings = OrderedDict()
@@ -49,11 +52,13 @@ def get_options(xslRoot, options):
         settings[setting[0].attrib['name']] = setting[0].attrib['select'].strip("'")
     return settings
 
+
 def set_options(xslRoot, options):
     for option in options:
         current = xslRoot.xpath("//xsl:variable[@name = '{0}']".format(option), namespaces={'xsl':'http://www.w3.org/1999/XSL/Transform'})
         current[0].set('select', options[option])
     return xslRoot
+
 
 def get_input(xslRoot):
     options = OrderedDict()
@@ -75,6 +80,7 @@ def get_input(xslRoot):
         options[field] = "'{0}'".format(value)
     return options
 
+
 def transform(xmlRoot, xslRoot, options=None):
 
     fields = get_fields(xslRoot)
@@ -92,9 +98,11 @@ def transform(xmlRoot, xslRoot, options=None):
 
     return transRoot
 
+
 @click.group()
 def cli():
     pass
+
 
 @click.command(context_settings=dict(ignore_unknown_options=True,))
 @click.argument('xml_path', nargs=1, type=click.Path(exists=True), metavar='XML_FILE')
@@ -197,6 +205,7 @@ def info(xml_path):
                 logging.warning('Unexpected field type: ', props[1])
     else:
         print("Document Type: not recognized")
+
 
 cli.add_command(convert)
 cli.add_command(info)

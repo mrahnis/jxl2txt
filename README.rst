@@ -7,8 +7,8 @@ jxl2txt is a Python script to convert Trimble JobXML files to various kinds of t
 .. image:: https://travis-ci.org/mrahnis/jxl2txt.svg?branch=master
     :target: https://travis-ci.org/mrahnis/jxl2txt
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/mrahnis/jxl2txt?svg=true
-	:target: https://ci.appveyor.com/api/projects/status/github/mrahnis/jxl2txt?svg=true
+.. image:: https://ci.appveyor.com/api/projects/status/9st7tu5v9hhlg306?svg=true
+	:target: https://ci.appveyor.com/project/mrahnis/jxl2txt
 
 .. image:: https://readthedocs.org/projects/jxl2txt/badge/?version=latest
 	:target: http://jxl2txt.readthedocs.io/en/latest/?badge=latest
@@ -34,8 +34,7 @@ If you are starting from scratch the first thing to do is install the Anaconda P
 .. code-block:: console
 
 	$conda config --append channels conda-forge
-	$conda config --append channels mrahnis
-	$conda install jxl2txt
+	$conda install jxl2txt -c mrahnis
 
 To install from the source distribution execute the setup script in the jxl2txt directory:
 
