@@ -2,7 +2,7 @@ platform: x64
 
 environment:
   ANACONDA_TOKEN:
-    secure: cKeC+a3Su46s2RrxdYhXLQ7G9APT03vq+hLxK0joIKZtWcjAx9GdFVoqWEtOg5dx
+    secure: iTF8kOBGKYYFOx5c0inHuvqyiTzjxM68i4bfZjgEpdmYCIhTwwtGj8NWWFf9AbFV
   PROJECT_NAME: jxl2txt
   GITHUB_REPO_NAME: mrahnis/jxl2txt
 
