@@ -1,7 +1,8 @@
 from click.testing import CliRunner
 
-import jxl2txt
+# import jxl2txt
 from jxl2txt.jxl2txt import cli
+
 
 def test_surficial():
     runner = CliRunner()

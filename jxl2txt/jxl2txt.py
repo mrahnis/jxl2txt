@@ -34,7 +34,7 @@ def get_fields(xslRoot):
     fields = OrderedDict()
 
     # xpath 2.0
-    #for field in xslRoot.xpath("/variable[matches(@name, 'userField*')]"):
+    # for field in xslRoot.xpath("/variable[matches(@name, 'userField*')]"):
     # xpath 1.0
     for element in xslRoot.xpath("//xsl:variable[starts-with(@name, 'userField')]", namespaces={'xsl':'http://www.w3.org/1999/XSL/Transform'}):
         select = element.attrib['select'].strip("'")
