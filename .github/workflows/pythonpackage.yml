@@ -56,7 +56,7 @@ jobs:
         path: ${{ env.WHEEL_PATH }}
     - name: Publish package to PyPI
       if: github.repository == 'mrahnis/jxl2txt' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@release/v1.4
       with:
         user: __token__
         password: ${{ secrets.pypi_token }}
