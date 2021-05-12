@@ -9,36 +9,49 @@ on:
     branches: [ main ]
 
 jobs:
-  example-1:
-    name: Conda package
-    runs-on: ubuntu-latest
+  build:
+    name: Conda package (${{ matrix.os }} py=${{ matrix.python-version }} np=${{ matrix.numpy-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest", "windows-latest"]
+        python-version: [3.8]
+        numpy-version: [1.19]
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: conda-incubator/setup-miniconda@v2
+      - name: Setup conda cache
+        uses: actions/cache@v2.1.5
+        env:
+          # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 0
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+            hashFiles('conda-build/environment.yml') }}    
+      - name: Setup miniconda ${{ matrix.python-version }}
+        uses: conda-incubator/setup-miniconda@v2.1.1
         with:
           activate-environment: rio
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
           auto-update-conda: true
           allow-softlinks: true
           channels: conda-forge
           show-channel-urls: true
-          channel-priority: flexible
+          channel-priority: strict
           environment-file: conda-build/environment.yml
           auto-activate-base: false
-      - name: Conda build
+          use-only-tar-bz2: true
+      - name: Build conda package
         shell: pwsh
         run: |
           conda config --set always_yes yes --set changeps1 no
-          conda build .
+          conda build . --python ${{ matrix.python-version }} --numpy ${{ matrix.python-version }}
           Copy-Item $env:CONDA_PREFIX\conda-bld -Destination . -Recurse
-      - name: Locate file
-        run: |
-          ARTIFACT_PATH=$(find conda-bld/noarch/*.tar.bz2)
-          ARTIFACT_NAME=$(basename $ARTIFACT_PATH)
-          echo "ARTIFACT_PATH=$ARTIFACT_PATH" >> $GITHUB_ENV
-          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-      - uses: actions/upload-artifact@v2
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.ARTIFACT_PATH }}
+          name: ${{ matrix.os }}-${{ matrix.python-version }}-packages
+          path: conda-bld/noarch/*.tar.bz2
 

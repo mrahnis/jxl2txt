@@ -1,12 +1,13 @@
 include MANIFEST.in
-include LICENSE.txt
 include README.rst
+include LICENSE.txt
 include setup.py
 
 graft examples
 graft jxl2txt
 
-global-exclude *.pyc
-global-exclude *.pyo
+recursive-exclude * *.py[co]
 global-exclude .git*
 global-exclude *.png
+include versioneer.py
+include jxl2txt/_version.py

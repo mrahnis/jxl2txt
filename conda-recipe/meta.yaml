@@ -1,6 +1,6 @@
 package:
   name: jxl2txt
-  version: "0.1.1"
+  version: {{ GIT_DESCRIBE_TAG }}.{{ GIT_BUILD_STR }}
 
 source:
   git_url: https://github.com/mrahnis/jxl2txt.git
