@@ -1,9 +1,5 @@
-from __future__ import print_function
+'''Console entry helpers'''
 
-try:
-    input = raw_input
-except NameError:
-    pass
 
 def integer_prompt(low, high, label=None):
     prompt = 'Enter an integer number between {0} and {1}: '.format(low, high)

@@ -6,11 +6,9 @@ A command-line utility to transform a Trimble JobXML file using a XSLT styleshee
 Stylesheets are available from the Trimble website.
 
 Examples:
-jxl2txt './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes No --no-prompt
+jxl2txt convert './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xsl' -o text.csv --includeAttributes No --no-prompt
 
 """
-
-from __future__ import print_function
 
 import sys
 import logging
@@ -107,7 +105,7 @@ def cli():
 @click.command(context_settings=dict(ignore_unknown_options=True,))
 @click.argument('xml_path', nargs=1, type=click.Path(exists=True), metavar='XML_FILE')
 @click.argument('xsl_path', nargs=1, type=click.Path(exists=True), metavar='XSL_FILE')
-@click.option('--output', type=click.File('wb', 0), metavar='OUTPUT_FILE', help="output file name")
+@click.option('--output', type=click.File('wb', None), metavar='OUTPUT_FILE', help="output file name")
 @click.option('--prompt/--no-prompt', default=True, help="show user prompts for stylesheet options, or use command line arguments")
 @click.option('-v', '--verbose', is_flag=True, help='enables verbose mode')
 @click.argument('xslt_args', nargs=-1, type=click.UNPROCESSED)
