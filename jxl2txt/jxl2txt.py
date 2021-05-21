@@ -12,8 +12,9 @@ jxl2txt convert './data/Topo-20100331.jxl' './xslt/Comma Delimited with dates.xs
 
 import sys
 import logging
-import click
+from typing import OrderedDict, Union
 
+import click
 import json
 from collections import OrderedDict
 from lxml import etree
@@ -21,14 +22,14 @@ from lxml import etree
 from jxl2txt.tools.console import choice_prompt, double_prompt, integer_prompt, string_prompt
 
 
-def read_xml(filename, parser):
+def read_xml(filename: str, parser: etree.XMLParser) -> etree.ElementTree:
     xml = open(filename).read().encode('utf-8')
     xmlRoot = etree.fromstring(xml, parser=parser)
 
     return xmlRoot
 
 
-def get_fields(xslRoot):
+def get_fields(xslRoot: etree.ElementTree) -> OrderedDict:
     fields = OrderedDict()
 
     # xpath 2.0
@@ -42,7 +43,7 @@ def get_fields(xslRoot):
     return fields
 
 
-def get_options(xslRoot, options):
+def get_options(xslRoot: etree.ElementTree, options: OrderedDict) -> OrderedDict:
     settings = OrderedDict()
 
     for option in options:
@@ -51,14 +52,14 @@ def get_options(xslRoot, options):
     return settings
 
 
-def set_options(xslRoot, options):
+def set_options(xslRoot: etree.ElementTree, options: OrderedDict) -> etree.ElementTree:
     for option in options:
         current = xslRoot.xpath("//xsl:variable[@name = '{0}']".format(option), namespaces={'xsl':'http://www.w3.org/1999/XSL/Transform'})
         current[0].set('select', options[option])
     return xslRoot
 
 
-def get_input(xslRoot):
+def get_input(xslRoot: etree.ElementTree) -> OrderedDict:
     options = OrderedDict()
     fields = get_fields(xslRoot)
     for field in fields:
@@ -79,7 +80,11 @@ def get_input(xslRoot):
     return options
 
 
-def transform(xmlRoot, xslRoot, options=None):
+def transform(
+    xmlRoot: etree.ElementTree,
+    xslRoot: etree.ElementTree,
+    options: Union[None, OrderedDict] = None
+) -> etree.ElementTree:
 
     fields = get_fields(xslRoot)
 
