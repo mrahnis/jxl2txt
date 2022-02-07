@@ -27,20 +27,24 @@ Installation
 
 To install from the Python Package Index:
 
-	$pip install jxl2txt
+.. code:: console
+
+	pip install jxl2txt
 
 To install from Anaconda Cloud:
 
 If you are starting from scratch the first thing to do is install the Anaconda Python distribution, add the necessary channels to obtain the dependencies and install jxl2txt.
 
-.. code-block:: console
+.. code:: console
 
-	$conda config --append channels conda-forge
-	$conda install jxl2txt -c mrahnis
+	conda config --append channels conda-forge
+	conda install jxl2txt -c mrahnis
 
 To install from the source distribution execute the setup script in the jxl2txt directory:
 
-	$python setup.py install
+.. code:: console
+
+	python setup.py install
 
 Examples
 ========
