@@ -1,0 +1,8 @@
+Usage: jxl2txt [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  convert  Apply an XSL stylesheet to a Trimble JXL file.
+  info     Print information about an XSL stylesheet
