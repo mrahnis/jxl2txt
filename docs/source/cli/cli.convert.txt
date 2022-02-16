@@ -1,0 +1,15 @@
+Usage: jxl2txt convert [OPTIONS] XML_FILE XSL_FILE [XSLT_ARGS]...
+
+  Apply an XSL stylesheet to a Trimble JXL file.
+
+  xml_path : input JobXML path
+
+  xsl_path : input XSLT stylesheet path
+
+Options:
+  --output OUTPUT_FILE    output file name
+  --prompt / --no-prompt  show user prompts for stylesheet options, or use
+                          command line arguments
+
+  -v, --verbose           enables verbose mode
+  --help                  Show this message and exit.

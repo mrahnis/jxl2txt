@@ -1,0 +1,6 @@
+Usage: jxl2txt info [OPTIONS] XML_FILE
+
+  Print information about an XSL stylesheet
+
+Options:
+  --help  Show this message and exit.
