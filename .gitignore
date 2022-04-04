@@ -67,3 +67,4 @@ target/
 examples/
 
 VERSION.txt
+*.sublime-project
