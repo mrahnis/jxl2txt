@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jxl2txt"
+authors = [
+  {name = "Michael Rahnis", email = "mike@topomatrix.com"},
+]
+description = "Python library to convert Trimble JobXML files using XSLT"
+dynamic = ["version"]
+readme = "README.rst"
+license = {file = "LICENSE.txt"}
+keywords = ["survey, conversion"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3"
+]
+
+requires-python = ">=3.8"
+
+dependencies = [
+  "click",
+  "lxml",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+    "mypy",
+    "ruff",
+]
+dev = [
+    "numpydoc",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://topomatrix.com"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/mrahnis/jxl2txt/jxl2txt.git"
+Changelog = "https://github.com/mrahnis/jxl2txt/blob/main/CHANGELOG.md"
+
+[project.scripts]
+jxl2txt = "jxl2txt.jxl2txt:cli"
+
+[tool.setuptools.dynamic]
+version = {attr = "jxl2txt._version.__version__"}
+
+[tool.mypy]
+python_version = "3.8"
+files = ["jxl2txt"]
+show_error_codes = true
+pretty = true
+strict = true
+local_partial_types = true
+warn_unreachable = true
