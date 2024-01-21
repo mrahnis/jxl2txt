@@ -21,9 +21,9 @@ requirements:
     - python
     - setuptools
   run:
-    - python
-    - click
-    - lxml
+    {% for dependency in pyproject['project']['dependencies'] %}
+    - {{ dependency.lower() }}
+    {% endfor %}
 
 test:
   imports:
