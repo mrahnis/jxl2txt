@@ -67,7 +67,7 @@ target/
 examples/
 
 VERSION.txt
-*.sublime-project
+
 # pixi environments
 .pixi
 
